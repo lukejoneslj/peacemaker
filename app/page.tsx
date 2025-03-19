@@ -2,14 +2,86 @@
 
 import { useState } from "react";
 import { analyzeDignity, DignityScore } from "@/lib/gemini";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import { DignityScale } from "@/components/dignity-scale";
+
+// Simple UI component replacements
+const Button = ({ children, onClick, disabled, className = "" }) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 ${className}`}
+  >
+    {children}
+  </button>
+);
+
+const Textarea = ({ placeholder, className = "", value, onChange }) => (
+  <textarea
+    placeholder={placeholder}
+    className={`w-full border border-gray-300 rounded-md p-2 ${className}`}
+    value={value}
+    onChange={onChange}
+  />
+);
+
+const Card = ({ children, className = "" }) => (
+  <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>{children}</div>
+);
+
+const CardHeader = ({ children }) => <div className="p-4 border-b">{children}</div>;
+const CardTitle = ({ children }) => <h3 className="text-lg font-semibold">{children}</h3>;
+const CardDescription = ({ children }) => <p className="text-sm text-gray-500">{children}</p>;
+const CardContent = ({ children, className = "" }) => <div className={`p-4 ${className}`}>{children}</div>;
+const CardFooter = ({ children, className = "" }) => <div className={`p-4 border-t ${className}`}>{children}</div>;
+
+const Progress = ({ value, className = "" }) => (
+  <div className={`w-full bg-gray-200 rounded-full h-2.5 ${className}`}>
+    <div
+      className="bg-blue-600 h-full rounded-full"
+      style={{ width: `${value}%` }}
+    ></div>
+  </div>
+);
+
+const Badge = ({ children, variant = "default", className = "" }) => {
+  const variantClasses = {
+    default: "bg-gray-100 text-gray-800",
+    destructive: "bg-red-100 text-red-800",
+    success: "bg-green-100 text-green-800",
+    warning: "bg-yellow-100 text-yellow-800",
+    secondary: "bg-purple-100 text-purple-800",
+  };
+  
+  return (
+    <span className={`px-2 py-1 text-xs font-medium rounded-full ${variantClasses[variant]} ${className}`}>
+      {children}
+    </span>
+  );
+};
+
+const Loader2 = ({ className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={`animate-spin ${className}`}
+  >
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+  </svg>
+);
+
+const toast = {
+  error: (message) => {
+    console.error(message);
+    alert(message);
+  }
+};
 
 export default function Home() {
   const [inputText, setInputText] = useState("");
