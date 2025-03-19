@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { analyzeDignity, DignityScore } from "@/lib/gemini";
 import { DignityScale } from "@/components/dignity-scale";
 
 // Simple UI component replacements
-const Button = ({ children, onClick, disabled, className = "" }) => (
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+}
+
+const Button = ({ children, onClick, disabled, className = "" }: ButtonProps) => (
   <button
     onClick={onClick}
     disabled={disabled}
@@ -15,7 +22,14 @@ const Button = ({ children, onClick, disabled, className = "" }) => (
   </button>
 );
 
-const Textarea = ({ placeholder, className = "", value, onChange }) => (
+interface TextareaProps {
+  placeholder?: string;
+  className?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+const Textarea = ({ placeholder, className = "", value, onChange }: TextareaProps) => (
   <textarea
     placeholder={placeholder}
     className={`w-full border border-gray-300 rounded-md p-2 ${className}`}
@@ -24,17 +38,27 @@ const Textarea = ({ placeholder, className = "", value, onChange }) => (
   />
 );
 
-const Card = ({ children, className = "" }) => (
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Card = ({ children, className = "" }: CardProps) => (
   <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>{children}</div>
 );
 
-const CardHeader = ({ children }) => <div className="p-4 border-b">{children}</div>;
-const CardTitle = ({ children }) => <h3 className="text-lg font-semibold">{children}</h3>;
-const CardDescription = ({ children }) => <p className="text-sm text-gray-500">{children}</p>;
-const CardContent = ({ children, className = "" }) => <div className={`p-4 ${className}`}>{children}</div>;
-const CardFooter = ({ children, className = "" }) => <div className={`p-4 border-t ${className}`}>{children}</div>;
+const CardHeader = ({ children, className = "" }: CardProps) => <div className={`p-4 border-b ${className}`}>{children}</div>;
+const CardTitle = ({ children, className = "" }: CardProps) => <h3 className={`text-lg font-semibold ${className}`}>{children}</h3>;
+const CardDescription = ({ children, className = "" }: CardProps) => <p className={`text-sm text-gray-500 ${className}`}>{children}</p>;
+const CardContent = ({ children, className = "" }: CardProps) => <div className={`p-4 ${className}`}>{children}</div>;
+const CardFooter = ({ children, className = "" }: CardProps) => <div className={`p-4 border-t ${className}`}>{children}</div>;
 
-const Progress = ({ value, className = "" }) => (
+interface ProgressProps {
+  value: number;
+  className?: string;
+}
+
+const Progress = ({ value, className = "" }: ProgressProps) => (
   <div className={`w-full bg-gray-200 rounded-full h-2.5 ${className}`}>
     <div
       className="bg-blue-600 h-full rounded-full"
@@ -43,7 +67,13 @@ const Progress = ({ value, className = "" }) => (
   </div>
 );
 
-const Badge = ({ children, variant = "default", className = "" }) => {
+interface BadgeProps {
+  children: React.ReactNode;
+  variant?: "default" | "destructive" | "success" | "warning" | "secondary";
+  className?: string;
+}
+
+const Badge = ({ children, variant = "default", className = "" }: BadgeProps) => {
   const variantClasses = {
     default: "bg-gray-100 text-gray-800",
     destructive: "bg-red-100 text-red-800",
@@ -59,7 +89,11 @@ const Badge = ({ children, variant = "default", className = "" }) => {
   );
 };
 
-const Loader2 = ({ className = "" }) => (
+interface LoaderProps {
+  className?: string;
+}
+
+const Loader2 = ({ className = "" }: LoaderProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -77,7 +111,7 @@ const Loader2 = ({ className = "" }) => (
 );
 
 const toast = {
-  error: (message) => {
+  error: (message: string) => {
     console.error(message);
     alert(message);
   }
