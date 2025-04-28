@@ -360,9 +360,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Results Section - Remove individual fade-in */}
+        {/* Results Section */}
         {result && (
-          <div className="adobe-card p-8 mb-10" data-aos="fade-up">
+          <div className="adobe-card p-8 mb-10">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold text-gray-800">Communication Analysis</h2>
               <Badge variant={getBadgeColor(result.score)} className="px-4 py-1.5 text-sm font-medium">
