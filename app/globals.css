@@ -25,15 +25,17 @@
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
     
-    /* Custom colors for Dignity Index */
-    --contempt-1: 0 80% 50%;
-    --contempt-2: 10 80% 55%;
-    --contempt-3: 20 80% 60%;
-    --contempt-4: 30 70% 65%;
-    --dignity-5: 210 70% 60%;
-    --dignity-6: 220 65% 55%;
-    --dignity-7: 150 60% 50%;
-    --dignity-8: 120 70% 45%;
+    /* Custom colors for Toxicity Scale */
+    --non-toxic-1: 142 76% 45%;
+    --non-toxic-2: 145 65% 50%;
+    --mild-3: 120 65% 50%;
+    --mild-4: 40 90% 60%;
+    --moderate-5: 35 90% 65%;
+    --moderate-6: 25 90% 65%;
+    --toxic-7: 15 90% 60%;
+    --toxic-8: 5 90% 60%;
+    --severe-9: 0 90% 55%;
+    --severe-10: 0 90% 45%;
   }
 
   .dark {
@@ -68,6 +70,27 @@
   }
 }
 
+/* Vibrant gradient backgrounds */
+.bg-gradient-vibrant {
+  background: linear-gradient(90deg, #FF00FF, #F57FFF, #8C9EFF, #00C6FF);
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.bg-gradient-purple-blue {
+  background: linear-gradient(135deg, #aa00ff 0%, #8c9eff 100%);
+}
+
+.bg-gradient-slider {
+  background: linear-gradient(90deg, #ffd166, #ff9f7f, #ef5da8, #a177e0, #6a5af9);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Grid pattern background */
 .bg-grid-pattern {
   background-size: 20px 20px;
@@ -86,6 +109,66 @@
   @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
 }
 
+.text-gradient-vibrant {
+  background: linear-gradient(90deg, #f72585, #7209b7, #3a0ca3, #4361ee);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: textGradientShift 8s ease infinite;
+}
+
+@keyframes textGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom switch styles */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #6a5af9;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(30px);
+}
+
 /* Custom animations */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -94,6 +177,23 @@
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Adobe-style cards */
+.adobe-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.adobe-card-dashed {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 2px dashed rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 /* Custom scrollbar */

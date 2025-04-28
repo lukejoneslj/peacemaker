@@ -88,55 +88,42 @@ const toxicityLevels = [
 
 export function ToxicityScale() {
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Toxicity Scale</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-1.5">
-          <div className="grid grid-cols-10 gap-1">
-            {toxicityLevels.map((level) => (
-              <HoverCard key={level.level} openDelay={200} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <div
-                    className={`h-6 rounded cursor-pointer transition-all ${level.color} hover:bg-opacity-90`}
-                  />
-                </HoverCardTrigger>
-                <HoverCardContent className="w-80 p-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold">{level.title}</h3>
-                      <span
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          level.category === "Non-toxic"
-                            ? "bg-green-100 text-green-800"
-                            : level.category === "Mild"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : level.category === "Moderate"
-                            ? "bg-orange-100 text-orange-800"
-                            : level.category === "Toxic"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-red-200 text-red-900"
-                        }`}
-                      >
-                        {level.category}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{level.description}</p>
-                    <div className="text-xs italic border-l-2 pl-2 border-muted">
-                      Example: "{level.subtext}"
-                    </div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            ))}
-          </div>
-          <div className="flex justify-between text-xs text-muted-foreground px-0.5 mt-1">
-            <span>Non-toxic</span>
-            <span>Severe</span>
-          </div>
+    <div className="w-full">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <div className="w-full h-8 rounded-full bg-gradient-slider overflow-hidden"></div>
         </div>
-      </CardContent>
-    </Card>
+        <div className="grid grid-cols-2 gap-4">
+          {[
+            { levels: [1, 2], label: "Non-toxic", description: "Respectful and constructive communication", color: "bg-green-100 text-green-800" },
+            { levels: [3, 4], label: "Mild", description: "Critical but still civil discourse", color: "bg-yellow-100 text-yellow-800" },
+            { levels: [5, 6], label: "Moderate", description: "Negative tone with some hostility", color: "bg-orange-100 text-orange-800" },
+            { levels: [7, 8], label: "Toxic", description: "Clearly hostile and inflammatory", color: "bg-red-100 text-red-800" },
+            { levels: [9, 10], label: "Severe", description: "Extreme hostility or hate speech", color: "bg-red-200 text-red-900" },
+          ].map((category) => (
+            <div key={category.label} className="adobe-card p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`inline-block px-2 py-1 rounded-md text-xs font-medium ${category.color}`}>
+                  {category.label}
+                </span>
+                <span className="text-sm text-gray-500">Levels {category.levels.join("-")}</span>
+              </div>
+              <p className="text-sm text-gray-700">{category.description}</p>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-4">
+          <h3 className="font-medium text-gray-800 mb-2">How we measure toxicity:</h3>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+            <li>Level 1-2: Completely respectful and constructive</li>
+            <li>Level 3-4: Critical but maintains civility</li>
+            <li>Level 5-6: Shows negativity and mild hostility</li>
+            <li>Level 7-8: Contains hostile and inflammatory language</li>
+            <li>Level 9-10: Contains extreme hostility or hate speech</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 } 

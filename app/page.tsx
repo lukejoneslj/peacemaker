@@ -230,177 +230,191 @@ export default function Home() {
   };
 
   return (
-    <GradientBackground>
-      <main className="flex min-h-screen flex-col items-center p-4 sm:p-8 md:p-12">
-        <div className="max-w-5xl w-full space-y-8">
-          <div className="text-center space-y-5">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Peacemaker Tool
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Analyze your political discourse to promote respectful, constructive communication
-            </p>
-            <div className="mt-8 bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-gray-100 shadow-sm">
-              <h2 className="text-xl font-medium mb-4 text-gray-800">Choose a Topic</h2>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {[...controversialTopics, "Other"].map((topic) => (
-                  <button
-                    key={topic}
-                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                      selectedTopic === topic
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "bg-white hover:bg-gray-50 text-gray-800 border border-gray-200"
-                    }`}
-                    onClick={() => handleTopicSelect(topic)}
-                    type="button"
-                  >
-                    {topic}
-                  </button>
-                ))}
-              </div>
-              
-              {showCustomInput && (
-                <div className="mt-4 max-w-md mx-auto">
-                  <input
-                    type="text"
-                    placeholder="Enter your custom topic..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={customTopic}
-                    onChange={(e) => setCustomTopic(e.target.value)}
-                  />
+    <div className="bg-white min-h-screen">
+      {/* Header section with gradient background */}
+      <div className="bg-gradient-vibrant w-full py-16 px-4 sm:py-20">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+            Peacemaker Tool
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            Analyze your political discourse to promote respectful, constructive communication
+          </p>
+        </div>
+      </div>
+
+      <main className="max-w-6xl mx-auto px-4 -mt-8">
+        <div className="adobe-card p-8 mb-10">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Choose a Topic</h2>
+          <div className="flex flex-wrap gap-2 justify-center mb-6">
+            {[...controversialTopics, "Other"].map((topic) => (
+              <button
+                key={topic}
+                className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
+                  selectedTopic === topic
+                    ? "bg-gradient-purple-blue text-white shadow-md"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                }`}
+                onClick={() => handleTopicSelect(topic)}
+                type="button"
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
+          
+          {showCustomInput && (
+            <div className="mt-4 max-w-md mx-auto">
+              <input
+                type="text"
+                placeholder="Enter your custom topic..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                value={customTopic}
+                onChange={(e) => setCustomTopic(e.target.value)}
+              />
+            </div>
+          )}
+          
+          {/* Text Input Section */}
+          <div className="mt-8">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-xl font-semibold text-gray-800">Share Your Perspective</h3>
+              {selectedTopic && (
+                <div className="text-sm text-purple-600 font-medium">
+                  Topic: {selectedTopic === "Other" ? customTopic : selectedTopic}
                 </div>
               )}
             </div>
+            <p className="text-gray-600 mb-4">
+              Give your raw, unfiltered thoughts about this issue. What do you think should be done? Why do you hold this position?
+            </p>
+            <div className="adobe-card-dashed p-4">
+              <Textarea
+                placeholder={selectedTopic === "Other" && customTopic 
+                  ? `What are your thoughts on ${customTopic.toLowerCase()}?` 
+                  : selectedTopic 
+                    ? `What are your thoughts on ${selectedTopic.toLowerCase()}?` 
+                    : "Select a topic above, then share your perspective..."}
+                className="min-h-[150px] focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none border-0 shadow-none"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                disabled={!selectedTopic || (selectedTopic === "Other" && !customTopic.trim())}
+              />
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Button
+                onClick={handleAnalyze}
+                disabled={isAnalyzing || !selectedTopic || !inputText.trim() || (selectedTopic === "Other" && !customTopic.trim())}
+                className="bg-gradient-purple-blue hover:opacity-90 transition-opacity"
+                type="button"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  "Analyze Perspective"
+                )}
+              </Button>
+            </div>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-8">
-              <Card className="w-full overflow-hidden shadow-md border-gray-100">
-                <CardHeader className="bg-white border-b border-gray-100">
-                  <CardTitle>Share Your Perspective</CardTitle>
-                  <CardDescription>
-                    Give your raw, unfiltered thoughts about this issue. What do you think should be done? Why do you hold this position?
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <Textarea
-                    placeholder={selectedTopic === "Other" && customTopic 
-                      ? `What are your thoughts on ${customTopic.toLowerCase()}?` 
-                      : selectedTopic 
-                        ? `What are your thoughts on ${selectedTopic.toLowerCase()}?` 
-                        : "Select a topic above, then share your perspective..."}
-                    className="min-h-[150px] focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    disabled={!selectedTopic || (selectedTopic === "Other" && !customTopic.trim())}
-                  />
-                </CardContent>
-                <CardFooter className="flex justify-end bg-gray-50">
-                  <Button
-                    onClick={handleAnalyze}
-                    disabled={isAnalyzing || !selectedTopic || !inputText.trim() || (selectedTopic === "Other" && !customTopic.trim())}
-                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition-colors"
-                    type="button"
-                  >
-                    {isAnalyzing ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      "Analyze Perspective"
-                    )}
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              {result && (
-                <Card className="w-full overflow-hidden shadow-md border-gray-100">
-                  <CardHeader className="bg-white border-b border-gray-100">
-                    <div className="flex items-center justify-between">
-                      <CardTitle>Communication Analysis</CardTitle>
-                      <Badge variant={getBadgeColor(result.score)} className="px-3 py-1">
-                        {result.category.charAt(0).toUpperCase() + result.category.slice(1)}
-                      </Badge>
-                    </div>
-                    <CardDescription>{getToxicityDescription(result.score)}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-6">
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm font-medium">
-                        <span className="text-green-600">Non-toxic</span>
-                        <span className="text-red-600">Severe</span>
-                      </div>
-                      <Progress value={result.score * 10} className="h-2.5" />
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Score:</span>
-                        <span className={`text-2xl font-bold ${getScoreColor(result.score)}`}>
-                          {result.score}/10
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-lg">Analysis & Peacemaker Guidance:</h3>
-                      <div className="text-muted-foreground space-y-4 leading-relaxed">
-                        <p>{result.explanation}</p>
-                        {result.improvementTips && (
-                          <div className="mt-6 pt-6 border-t">
-                            <h4 className="font-semibold text-base mb-3">Tips to improve communication:</h4>
-                            <ul className="space-y-3">
-                              {result.improvementTips.map((tip, index) => (
-                                <li key={`tip-${index}`} className="pl-6 relative">
-                                  <div className="absolute left-0 top-1.5 w-3 h-3 bg-blue-500 rounded-full"></div>
-                                  <p>{tip}</p>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+        {/* Results Section */}
+        {result && (
+          <div className="adobe-card p-8 mb-10 animate-fade-in">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800">Communication Analysis</h2>
+              <Badge variant={getBadgeColor(result.score)} className="px-4 py-1.5 text-sm font-medium">
+                {result.category.charAt(0).toUpperCase() + result.category.slice(1)}
+              </Badge>
             </div>
             
-            <div className="space-y-8">
-              <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
-                <ToxicityScale />
+            <p className="text-gray-700 mb-6">{getToxicityDescription(result.score)}</p>
+            
+            <div className="mb-8">
+              <div className="flex justify-between text-sm font-medium mb-2">
+                <span className="text-green-600">Non-toxic</span>
+                <span className="text-red-600">Severe</span>
               </div>
-              
-              <Card className="shadow-md border-gray-100">
-                <CardHeader className="bg-white border-b border-gray-100">
-                  <CardTitle>About the Peacemaker Tool</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-5 pt-6">
-                  <p className="leading-relaxed">
-                    The Peacemaker Tool helps you reflect on how you communicate about controversial political topics. By analyzing your language along a toxicity scale, it provides guidance on how to express your views more respectfully and constructively.
-                  </p>
-                  <div className="space-y-3 bg-blue-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-blue-800">Why This Matters:</h3>
-                    <p className="text-blue-700">
-                      In today's polarized climate, how we discuss controversial issues can either bridge divides or deepen them. Learning to express our authentic views with respect and understanding is essential for healthy democratic discourse.
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    <h3 className="font-semibold">How to Use:</h3>
-                    <ol className="list-decimal pl-8 space-y-2">
-                      <li>Select a controversial topic that matters to you</li>
-                      <li>Share your genuine perspective on the issue</li>
-                      <li>Receive an analysis of your communication style</li>
-                      <li>Review personalized tips to improve your messaging</li>
-                    </ol>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-slider" 
+                  style={{ width: `${result.score * 10}%` }}
+                ></div>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-sm font-medium">Score:</span>
+                <span className={`text-2xl font-bold ${getScoreColor(result.score)}`}>
+                  {result.score}/10
+                </span>
+              </div>
+            </div>
+
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">Analysis</h3>
+              <div className="text-gray-700 space-y-4 leading-relaxed">
+                <p>{result.explanation}</p>
+              </div>
+            </div>
+
+            {result.improvementTips && (
+              <div className="bg-indigo-50 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-indigo-800 mb-4">How to Improve</h3>
+                <ul className="space-y-4">
+                  {result.improvementTips.map((tip, index) => (
+                    <li key={`tip-${index}`} className="flex">
+                      <div className="flex-shrink-0 mr-3">
+                        <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">
+                          {index + 1}
+                        </div>
+                      </div>
+                      <p className="text-indigo-900">{tip}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* About & Toxicity Scale Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          <div className="adobe-card p-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">About the Peacemaker Tool</h2>
+            <div className="space-y-6">
+              <p className="text-gray-700 leading-relaxed">
+                The Peacemaker Tool helps you reflect on how you communicate about controversial political topics. By analyzing your language along a toxicity scale, it provides guidance on how to express your views more respectfully and constructively.
+              </p>
+              <div className="space-y-3 bg-indigo-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-indigo-800">Why This Matters:</h3>
+                <p className="text-indigo-700">
+                  In today's polarized climate, how we discuss controversial issues can either bridge divides or deepen them. Learning to express our authentic views with respect and understanding is essential for healthy democratic discourse.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-gray-800">How to Use:</h3>
+                <ol className="list-decimal pl-8 space-y-2 text-gray-700">
+                  <li>Select a controversial topic that matters to you</li>
+                  <li>Share your genuine perspective on the issue</li>
+                  <li>Receive an analysis of your communication style</li>
+                  <li>Review personalized tips to improve your messaging</li>
+                </ol>
+              </div>
             </div>
           </div>
-          <footer className="text-center text-gray-500 text-sm mt-12 border-t border-gray-100 pt-8">
-            <p>Peacemaker Tool — Promoting constructive political discourse</p>
-          </footer>
+          
+          <div className="adobe-card p-6">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Toxicity Scale</h2>
+            <ToxicityScale />
+          </div>
         </div>
+
+        <footer className="text-center text-gray-500 text-sm border-t border-gray-100 pt-8 pb-12">
+          <p>Peacemaker Tool — Promoting constructive political discourse</p>
+        </footer>
       </main>
-    </GradientBackground>
+    </div>
   );
 } 
