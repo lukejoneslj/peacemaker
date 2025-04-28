@@ -10,10 +10,12 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  type?: "button" | "submit" | "reset";
 }
 
-const Button = ({ children, onClick, disabled, className = "" }: ButtonProps) => (
+const Button = ({ children, onClick, disabled, className = "", type = "button" }: ButtonProps) => (
   <button
+    type={type}
     onClick={onClick}
     disabled={disabled}
     className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 ${className}`}
@@ -148,6 +150,18 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<ToxicityScore | null>(null);
   const [selectedTopic, setSelectedTopic] = useState("");
+  const [customTopic, setCustomTopic] = useState("");
+  const [showCustomInput, setShowCustomInput] = useState(false);
+
+  const handleTopicSelect = (topic: string) => {
+    setSelectedTopic(topic);
+    if (topic === "Other") {
+      setShowCustomInput(true);
+    } else {
+      setShowCustomInput(false);
+      setCustomTopic("");
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!inputText.trim()) {
@@ -155,9 +169,17 @@ export default function Home() {
       return;
     }
 
+    // Use custom topic if "Other" is selected
+    const topicToAnalyze = selectedTopic === "Other" ? customTopic : selectedTopic;
+
+    if (selectedTopic === "Other" && !customTopic.trim()) {
+      toast.error("Please enter a custom topic");
+      return;
+    }
+
     try {
       setIsAnalyzing(true);
-      const analysis = await analyzeToxicity(inputText, selectedTopic);
+      const analysis = await analyzeToxicity(inputText, topicToAnalyze);
       setResult(analysis);
     } catch (error) {
       console.error("Error analyzing text:", error);
@@ -210,7 +232,7 @@ export default function Home() {
           <div className="mt-6">
             <h2 className="text-xl font-medium mb-3">Choose a Topic</h2>
             <div className="flex flex-wrap gap-2 justify-center">
-              {controversialTopics.map((topic) => (
+              {[...controversialTopics, "Other"].map((topic) => (
                 <button
                   key={topic}
                   className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
@@ -218,12 +240,24 @@ export default function Home() {
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 hover:bg-gray-200 text-gray-800"
                   }`}
-                  onClick={() => setSelectedTopic(topic)}
+                  onClick={() => handleTopicSelect(topic)}
                 >
                   {topic}
                 </button>
               ))}
             </div>
+            
+            {showCustomInput && (
+              <div className="mt-4 max-w-md mx-auto">
+                <input
+                  type="text"
+                  placeholder="Enter your custom topic..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  value={customTopic}
+                  onChange={(e) => setCustomTopic(e.target.value)}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -238,17 +272,21 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <Textarea
-                  placeholder={selectedTopic ? `What are your thoughts on ${selectedTopic.toLowerCase()}?` : "Select a topic above, then share your perspective..."}
+                  placeholder={selectedTopic === "Other" && customTopic 
+                    ? `What are your thoughts on ${customTopic.toLowerCase()}?` 
+                    : selectedTopic 
+                      ? `What are your thoughts on ${selectedTopic.toLowerCase()}?` 
+                      : "Select a topic above, then share your perspective..."}
                   className="min-h-32"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  disabled={!selectedTopic}
+                  disabled={!selectedTopic || (selectedTopic === "Other" && !customTopic.trim())}
                 />
               </CardContent>
               <CardFooter className="flex justify-end">
                 <Button
                   onClick={handleAnalyze}
-                  disabled={isAnalyzing || !selectedTopic || !inputText.trim()}
+                  disabled={isAnalyzing || !selectedTopic || (selectedTopic === "Other" && !customTopic.trim())}
                   className="w-full sm:w-auto"
                 >
                   {isAnalyzing ? (
