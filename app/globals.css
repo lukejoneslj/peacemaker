@@ -81,10 +81,6 @@
   background: linear-gradient(135deg, #aa00ff 0%, #8c9eff 100%);
 }
 
-.bg-gradient-slider {
-  background: linear-gradient(90deg, #ffd166, #ff9f7f, #ef5da8, #a177e0, #6a5af9);
-}
-
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

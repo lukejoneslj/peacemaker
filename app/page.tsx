@@ -198,33 +198,33 @@ export default function Home() {
   };
 
   const getBadgeColor = (score: number) => {
-    if (score <= 2) return "success";
-    if (score <= 4) return "secondary";
-    if (score <= 6) return "warning";
-    if (score <= 8) return "destructive";
+    if (score >= 9) return "success";
+    if (score >= 7) return "secondary";
+    if (score >= 5) return "warning";
+    if (score >= 3) return "destructive";
     return "destructive";
   };
 
   const getScoreColor = (score: number) => {
-    if (score <= 2) return "text-green-500";
-    if (score <= 4) return "text-yellow-500";
-    if (score <= 6) return "text-orange-500";
-    if (score <= 8) return "text-red-500";
+    if (score >= 9) return "text-green-500";
+    if (score >= 7) return "text-yellow-500";
+    if (score >= 5) return "text-orange-500";
+    if (score >= 3) return "text-red-500";
     return "text-red-700";
   };
 
   const getToxicityDescription = (score: number) => {
     switch (score) {
-      case 1: return "Completely non-toxic, respectful, and constructive.";
-      case 2: return "Generally respectful with minor criticism.";
-      case 3: return "Mildly critical but still respectful and civil.";
-      case 4: return "Noticeably critical, some negative tone, but no hostility.";
-      case 5: return "Moderately negative, clear criticism, mild hostility.";
-      case 6: return "Negative tone with moderate hostility and sarcasm.";
-      case 7: return "Clearly hostile, aggressive language, minor insults.";
-      case 8: return "Very hostile, significant insults and inflammatory language.";
-      case 9: return "Extremely hostile, severe insults, potentially threatening language.";
-      case 10: return "Maximum hostility, threats, harassment, or hate speech.";
+      case 10: return "Completely non-toxic, respectful, and constructive.";
+      case 9: return "Generally respectful with minor criticism.";
+      case 8: return "Mildly critical but still respectful and civil.";
+      case 7: return "Noticeably critical, some negative tone, but no hostility.";
+      case 6: return "Moderately negative, clear criticism, mild hostility.";
+      case 5: return "Negative tone with moderate hostility and sarcasm.";
+      case 4: return "Clearly hostile, aggressive language, minor insults.";
+      case 3: return "Very hostile, significant insults and inflammatory language.";
+      case 2: return "Extremely hostile, severe insults, potentially threatening language.";
+      case 1: return "Maximum hostility, threats, harassment, or hate speech.";
       default: return "";
     }
   };
@@ -362,20 +362,37 @@ export default function Home() {
             
             <div className="mb-8">
               <div className="flex justify-between text-sm font-medium mb-2">
-                <span className="text-green-600">Non-toxic</span>
-                <span className="text-red-600">Severe</span>
+                <span className="text-red-600">Toxic</span>
+                <span className={`font-semibold ${getScoreColor(result.score)}`}>
+                  {result.category.charAt(0).toUpperCase() + result.category.slice(1)}
+                </span>
               </div>
               <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-slider" 
-                  style={{ width: `${result.score * 10}%` }}
+                  className="h-full" 
+                  style={{ 
+                    width: `${result.score * 10}%`,
+                    background: 'linear-gradient(to right, hsl(0, 90%, 60%), hsl(60, 90%, 60%), hsl(120, 70%, 50%))'
+                  }}
                 ></div>
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-sm font-medium">Score:</span>
-                <span className={`text-2xl font-bold ${getScoreColor(result.score)}`}>
-                  {result.score}/10
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`text-2xl font-bold ${getScoreColor(result.score)}`}>
+                    {result.score}/10
+                  </span>
+                  <div className="relative group">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-white rounded-lg border border-gray-300 shadow-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <p className="text-sm font-medium mb-1">What does my score mean?</p>
+                      <p className="text-xs text-gray-600 mb-2">{getToxicityDescription(result.score)}</p>
+                      <p className="text-xs text-blue-600">Scroll down to learn more about the toxicity scale.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
