@@ -53,7 +53,13 @@ export async function analyzeToxicity(text: string, topic: string = ""): Promise
          - "moderate" (scores 5-6)
          - "toxic" (scores 7-8)
          - "severe" (scores 9-10)
-      4. "improvementTips": An array of 3-5 specific, actionable tips to make the communication more respectful and constructive while still maintaining the core position. Each tip should be a single sentence.
+      4. "improvementTips": An array of 3-5 specific, actionable tips to make the communication more respectful and constructive while still maintaining the core position. Each tip should:
+         - Be clear and actionable
+         - Include specific "instead of saying X, try saying Y" examples
+         - Maintain the core position while changing the tone or framing
+         - Focus on how to express the same point in a way that's more likely to be heard by those with different views
+      
+      For example, an improvement tip might be: "Instead of saying 'Anyone who supports this policy is blind to reality,' try saying 'I believe this policy overlooks some important real-world consequences such as...'"
       
       Response format:
       {
