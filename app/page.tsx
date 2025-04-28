@@ -270,7 +270,7 @@ export default function Home() {
         </div>
       </div>
 
-      <main className="max-w-6xl mx-auto px-4 -mt-12">
+      <main className="max-w-6xl mx-auto px-4 mt-8">
         <div className="adobe-card p-8 mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">Choose a Topic</h2>
           <div className="flex flex-wrap gap-2 justify-center mb-6">
@@ -438,8 +438,51 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Before the existing footer, add an inspiration section */}
+        <div className="mt-16 mb-12 adobe-card p-8 bg-gradient-to-r from-blue-50 to-purple-50">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Inspired by "Peacemakers Needed"</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <p className="text-gray-700 mb-4">
+                This tool is inspired by President Russell M. Nelson's April 2023 General Conference talk,
+                "Peacemakers Needed," where he teaches that followers of Jesus Christ should be examples
+                of compassionate interaction, especially when we have differences of opinion.
+              </p>
+              <p className="text-gray-700 mb-4">
+                "As disciples of Jesus Christ, we are to be examples of how to interact with others—especially
+                when we have differences of opinion. One of the easiest ways to identify a true follower of Jesus
+                Christ is how compassionately that person treats other people."
+              </p>
+              <div className="mt-6">
+                <a 
+                  href="https://www.churchofjesuschrist.org/study/general-conference/2023/04/47nelson?lang=eng" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-5 py-2.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  Read the full talk
+                </a>
+              </div>
+            </div>
+            <div className="aspect-video">
+              <iframe 
+                className="w-full h-full rounded-lg shadow-md"
+                src="https://www.youtube.com/embed/vQghSMOOYz4?si=EITUlpmmeU-qXT3b" 
+                title="Russell M. Nelson: 'Peacemakers Needed'" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen 
+              />
+            </div>
+          </div>
+        </div>
+
         <footer className="text-center text-gray-500 text-sm border-t border-gray-100 pt-8 pb-12">
-          <p>Peacemaker Tool — Promoting constructive political discourse</p>
+          <p className="mb-2">Peacemaker Tool — Promoting constructive political discourse</p>
+          <p className="text-xs">Inspired by <a href="https://www.churchofjesuschrist.org/study/general-conference/2023/04/47nelson?lang=eng" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Russell M. Nelson's "Peacemakers Needed" talk</a></p>
         </footer>
       </main>
     </div>
