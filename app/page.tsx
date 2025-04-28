@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { analyzeToxicity, ToxicityScore } from "@/lib/gemini";
 import { ToxicityScale } from "@/components/toxicity-scale";
+import AOS from 'aos';
 
 // Simple UI component replacements
 interface ButtonProps {
@@ -161,6 +162,16 @@ export default function Home() {
   const [customTopic, setCustomTopic] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
 
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      disable: 'phone',
+      duration: 800,
+      easing: 'ease-out-cubic',
+    });
+  }, []);
+
   const handleTopicSelect = (topic: string) => {
     setSelectedTopic(topic);
     if (topic === "Other") {
@@ -270,14 +281,15 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Remove fade-in from main content area */}
       <main className="max-w-6xl mx-auto px-4 mt-8">
-        <div className="adobe-card p-8 mb-10">
+        <div className="adobe-card p-8 mb-10" data-aos="fade-up">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">Choose a Topic</h2>
           <div className="flex flex-wrap gap-2 justify-center mb-6">
             {[...controversialTopics, "Other"].map((topic) => (
               <button
                 key={topic}
-                className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
+                className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105 ${ 
                   selectedTopic === topic
                     ? "bg-gradient-purple-blue text-white shadow-md"
                     : "bg-gray-100 hover:bg-gray-200 text-gray-800"
@@ -348,9 +360,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Results Section */}
+        {/* Results Section - Remove individual fade-in */}
         {result && (
-          <div className="adobe-card p-8 mb-10 animate-fade-in">
+          <div className="adobe-card p-8 mb-10" data-aos="fade-up">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold text-gray-800">Communication Analysis</h2>
               <Badge variant={getBadgeColor(result.score)} className="px-4 py-1.5 text-sm font-medium">
@@ -369,7 +381,7 @@ export default function Home() {
               </div>
               <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
                 <div 
-                  className="h-full" 
+                  className="h-full transition-all duration-500 ease-out" 
                   style={{ 
                     width: `${result.score * 10}%`,
                     background: 'linear-gradient(to right, hsl(0, 90%, 60%), hsl(60, 90%, 60%), hsl(120, 70%, 50%))'
@@ -425,7 +437,8 @@ export default function Home() {
 
         {/* About & Toxicity Scale Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          <div className="adobe-card p-8">
+          {/* Remove individual fade-in */}
+          <div className="adobe-card p-8" data-aos="fade-up">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">About the Peacemaker Tool</h2>
             <div className="space-y-6">
               <p className="text-gray-700 leading-relaxed">
@@ -449,14 +462,15 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="adobe-card p-6">
+          {/* Remove individual fade-in */}
+          <div className="adobe-card p-6" data-aos="fade-up">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Toxicity Scale</h2>
             <ToxicityScale />
           </div>
         </div>
 
         {/* Before the existing footer, add an inspiration section */}
-        <div className="mt-16 mb-12 adobe-card p-8 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="mt-16 mb-12 adobe-card p-8 bg-gradient-to-r from-blue-50 to-purple-50" data-aos="fade-up">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">Inspired by "Peacemakers Needed"</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
