@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dignity Index Evaluator",
-  description: "Analyze your text along the 8-point Dignity Index scale from contempt to dignity",
+  title: "Peacemaker Tool",
+  description: "Analyze text along a 10-point Toxicity Scale using Google's Gemini 2.0 Flash Lite AI model",
 };
 
 export default function RootLayout({
