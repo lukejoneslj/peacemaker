@@ -263,7 +263,7 @@ export default function Home() {
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-md">
-            Peacemaker Tool
+            Become a Peacemaker
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
             Analyze your political discourse to promote respectful, constructive communication
