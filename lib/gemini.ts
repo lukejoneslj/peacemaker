@@ -28,26 +28,55 @@ export interface ToxicityScore {
 export async function analyzeToxicity(text: string, topic: string = ""): Promise<ToxicityScore> {
   try {
     // Create the prompt for the Gemini model
-    const prompt = `Analyze the following text and rate it on a toxicity scale from 1-10, where 1 is highly toxic and 10 is completely peaceful.
+    const prompt = `
+      Analyze the following perspective on ${topic || "a political topic"} and rate it on the Peacemaker Scale, which is a 10-point scale from highly toxic to completely peaceful.
 
-TEXT TO ANALYZE: "${text}"
-TOPIC: ${topic || "general discussion"}
+      The Peacemaker Scale:
+      - Level 1: Maximum hostility, threats, harassment, or hate speech.
+      - Level 2: Extremely hostile, severe insults, potentially threatening language.
+      - Level 3: Very hostile, significant insults and inflammatory language.
+      - Level 4: Clearly hostile, aggressive language, minor insults.
+      - Level 5: Negative tone with moderate hostility and sarcasm.
+      - Level 6: Moderately negative, clear criticism, mild hostility.
+      - Level 7: Noticeably critical, some negative tone, but no hostility.
+      - Level 8: Mildly critical but still respectful and civil.
+      - Level 9: Generally respectful with minor criticism.
+      - Level 10: Completely non-toxic, respectful, and constructive.
 
-Please respond ONLY with a valid JSON object in this exact format:
-{
-  "score": 5,
-  "explanation": "Brief explanation of the analysis",
-  "category": "moderate",
-  "improvementTips": ["Tip 1", "Tip 2", "Tip 3"]
-}
+      TEXT TO ANALYZE:
+      "${text}"
 
-Requirements:
-- score: integer 1-10 (1=most toxic, 10=most peaceful)
-- explanation: 2-3 sentences explaining the score
-- category: "severe" (1-2), "toxic" (3-4), "moderate" (5-6), "mild" (7-8), or "non-toxic" (9-10)
-- improvementTips: array of 2-3 actionable suggestions
+      Your response should have a constructive, supportive tone. Validate what aspects of their perspective are thoughtful, even if you're identifying toxicity. Your goal is to help the user become more effective at communicating across political divides.
 
-Be constructive and helpful in your analysis.`;
+      Return a JSON object with:
+      1. "score": A number from 1 to 10 representing the Peacemaker Scale score (1 being most toxic, 10 being most peaceful)
+      2. "explanation": A 3-4 paragraph explanation that:
+         - Validly identifies the core position being expressed
+         - Explains why the text received this score, with specific examples
+         - Notes constructive elements of the communication
+         - Suggests how the message might be received by those with different views
+      3. "category": One of the following based on the score:
+         - "severe" (scores 1-2)
+         - "toxic" (scores 3-4)
+         - "moderate" (scores 5-6)
+         - "mild" (scores 7-8)
+         - "non-toxic" (scores 9-10)
+      4. "improvementTips": An array of 3-5 specific, actionable tips to make the communication more respectful and constructive while still maintaining the core position. Each tip should:
+         - Be clear and actionable
+         - Include specific "instead of saying X, try saying Y" examples
+         - Maintain the core position while changing the tone or framing
+         - Focus on how to express the same point in a way that's more likely to be heard by those with different views
+
+      For example, an improvement tip might be: "Instead of saying 'Anyone who supports this policy is blind to reality,' try saying 'I believe this policy overlooks some important real-world consequences such as...'"
+
+      Response format:
+      {
+        "score": number,
+        "explanation": string,
+        "category": string,
+        "improvementTips": string[]
+      }
+    `;
 
     // Generate content from the model
     const result = await model.generateContent(prompt);
