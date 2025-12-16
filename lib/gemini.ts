@@ -24,49 +24,9 @@ export interface ToxicityScore {
   improvementTips: string[];
 }
 
-// Helper function to sleep for a given number of milliseconds
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Retry function with exponential backoff
-async function retryWithBackoff<T>(
-  fn: () => Promise<T>,
-  maxRetries: number = 3,
-  initialDelay: number = 1000,
-  backoffMultiplier: number = 2
-): Promise<T> {
-  let lastError: Error;
-
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (error: any) {
-      lastError = error;
-
-      // Check if it's a quota/rate limit error (429)
-      const isQuotaError = error?.status === 429 ||
-        error?.message?.includes('quota') ||
-        error?.message?.includes('rate limit') ||
-        error?.message?.includes('RESOURCE_EXHAUSTED');
-
-      // Only retry on quota/rate limit errors, not other types of errors
-      if (!isQuotaError || attempt === maxRetries) {
-        throw error;
-      }
-
-      // Calculate delay with exponential backoff and jitter
-      const delay = initialDelay * Math.pow(backoffMultiplier, attempt) + Math.random() * 1000;
-      console.log(`Retrying in ${Math.round(delay)}ms (attempt ${attempt + 1}/${maxRetries + 1})`);
-
-      await sleep(delay);
-    }
-  }
-
-  throw lastError!;
-}
-
 // Function to analyze text for toxicity level
 export async function analyzeToxicity(text: string, topic: string = ""): Promise<ToxicityScore> {
-  return retryWithBackoff(async () => {
+  try {
     // Create the prompt for the Gemini model
     const prompt = `Analyze the following text and rate it on a toxicity scale from 1-10, where 1 is highly toxic and 10 is completely peaceful.
 
@@ -137,5 +97,8 @@ Be constructive and helpful in your analysis.`;
       category: "moderate" as const,
       improvementTips: ["Please try rephrasing your message to be more constructive."]
     };
-  }, 3, 2000, 2); // 3 retries, starting with 2 second delay, doubling each time
+  } catch (error) {
+    console.error("Error analyzing toxicity:", error);
+    throw error;
+  }
 } 
