@@ -1,6 +1,6 @@
 # Peacemaker Tool
 
-A beautiful web application that evaluates text along a 10-point Toxicity Scale using Google's Gemini 2.0 Flash Lite AI model.
+A beautiful web application that evaluates text along a 10-point Toxicity Scale using Google's Gemini 2.5 Flash-Lite AI model.
 
 ## About The Toxicity Scale
 
@@ -27,18 +27,17 @@ By evaluating where communication falls on this scale, we can work toward more c
 * **Framework**: Next.js
 * **UI Components**: shadcn/ui
 * **Styling**: Tailwind CSS
-* **AI**: Google Gemini 2.0 Flash Lite
+* **AI**: Google Gemini 2.5 Flash-Lite
 * **Toast Notifications**: sonner
 
 ## Getting Started
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Set up your environment variables:  
-   * Create a `.env.local` file with your Google Gemini API key:  
-   ```  
-   NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here  
-   ```
+3. **Set up your Google Gemini API Key:**
+   * Get an API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   * Copy the `.env.example` file to `.env.local`: `cp .env.example .env.local`
+   * Replace `your_api_key_here` with your actual API key in `.env.local`
 4. Run the development server: `npm run dev`
 5. Open <http://localhost:3000> in your browser
 
