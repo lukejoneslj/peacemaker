@@ -3,9 +3,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // Initialize the Google Generative AI with the API key
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
 
-// Get the model - using Gemini 2.0 Flash Lite
+// Get the model - using Gemini 2.5 Flash-Lite
 export const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash-lite",
+  model: "gemini-2.5-flash-lite",
   generationConfig: {
     temperature: 0.7,
     topK: 40,
