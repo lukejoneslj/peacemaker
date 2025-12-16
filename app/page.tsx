@@ -200,9 +200,19 @@ export default function Home() {
       setIsAnalyzing(true);
       const analysis = await analyzeToxicity(inputText, topicToAnalyze);
       setResult(analysis);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error analyzing text:", error);
-      toast.error("Failed to analyze text. Please try again.");
+
+      // Check for specific error types and provide better user feedback
+      if (error?.status === 429 || error?.message?.includes('quota') || error?.message?.includes('rate limit')) {
+        toast.error("The analysis service is currently at capacity. The free tier has limited usage. Please try again in a few minutes, or consider upgrading to a paid plan.");
+      } else if (error?.message?.includes('API key') || error?.status === 403) {
+        toast.error("There seems to be an issue with the API configuration. Please contact support.");
+      } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
+        toast.error("Network error. Please check your internet connection and try again.");
+      } else {
+        toast.error("Failed to analyze text. Please try again.");
+      }
     } finally {
       setIsAnalyzing(false);
     }
